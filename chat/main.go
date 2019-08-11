@@ -7,6 +7,8 @@ import (
   "path/filepath"
   "sync"
   "flag"
+  "os"
+  "app/trace"
 )
 
 //temp1 shows 1 template
@@ -29,6 +31,7 @@ func main() {
   var addr = flag.String("addr", ":8080", "ApplicationAddress")
   flag.Parse() //Analyse flag
   r := newRoom()
+  r.tracer = trace.New(os.Stdout)
   http.Handle("/", &templateHandler{filename: "chat.html"})
   http.Handle("/room", r)
   // start chat room
