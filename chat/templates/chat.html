@@ -10,6 +10,7 @@
   <ul id="messages"></ul>
   WebSocket chat application
   <form id="chatbox">
+    {{.UserData.name}}
     <textarea></textarea>
     <input type="submit" value="Send" />
   </form>
@@ -26,7 +27,7 @@
         alert("Error: WebSocket Not Connected");
         return false;
       }
-      socket.send(msgBox.val());
+      socket.send(JSON.stringify({"Message": msgBox.val()}));
       msgBox.val("");
       return false;
     });
@@ -38,7 +39,13 @@
         alert("Connection Finished.");
       }
       socket.onmessage = function(e) {
-        messages.append($("<li>").text(e.data));
+        var msg = eval("("+e.data+")");
+        messages.append(
+          $("<li>").append(
+            $("<strong>").text(msg.Name + ": "),
+            $("<span>").text(msg.Message)
+          )
+        );
       }
      }
    });
