@@ -20,3 +20,10 @@ func (t *tracer) Trace(a ...interface{}) {
   t.out.Write([]byte(fmt.Sprint(a...)))
   t.out.Write([]byte("\n"))
 }
+
+type nilTracer struct{}
+func (t *nilTracer) Trace(a ...interface{}) {}
+// Off returns Tracer ignoring Trace method
+func Off() Tracer{
+  return &nilTracer{}
+}
